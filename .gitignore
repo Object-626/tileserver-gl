@@ -1,8 +1,4 @@
 docs/_build
-public/resources/leaflet-hash.js
-public/resources/leaflet.css
-public/resources/leaflet.js
-public/resources/leaflet.js.map
 public/resources/mapbox-gl-rtl-text.js
 public/resources/maplibre-gl-inspect.css
 public/resources/maplibre-gl-inspect.js
