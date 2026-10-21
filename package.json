@@ -19,8 +19,8 @@
   ],
   "scripts": {
     "prepare": "npm run copy:maplibre && npm run copy:maplibre-inspect && npm run copy:mapbox-rtl-text",
-    "copy:maplibre": "copyfiles -EVf node_modules/maplibre-gl/dist/maplibre-gl.js node_modules/maplibre-gl/dist/maplibre-gl.js.map node_modules/maplibre-gl/dist/maplibre-gl.css public/resources/",
-    "copy:maplibre-inspect": "copyfiles -EVf node_modules/@maplibre/maplibre-gl-inspect/dist/maplibre-gl-inspect.js node_modules/@maplibre/maplibre-gl-inspect/dist/maplibre-gl-inspect.js.map node_modules/@maplibre/maplibre-gl-inspect/dist/maplibre-gl-inspect.css  public/resources/",
+    "copy:maplibre": "copyfiles -EVf node_modules/maplibre-gl/dist/maplibre-gl.mjs node_modules/maplibre-gl/dist/maplibre-gl.mjs.map node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs.map node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs.map node_modules/maplibre-gl/dist/maplibre-gl.css public/resources/",
+    "copy:maplibre-inspect": "copyfiles -EVf node_modules/@maplibre/maplibre-gl-inspect/dist/maplibre-gl-inspect.mjs node_modules/@maplibre/maplibre-gl-inspect/dist/maplibre-gl-inspect.mjs.map node_modules/@maplibre/maplibre-gl-inspect/dist/maplibre-gl-inspect.css  public/resources/",
     "copy:mapbox-rtl-text": "copyfiles -EVf node_modules/@mapbox/mapbox-gl-rtl-text/dist/mapbox-gl-rtl-text.js public/resources/",
     "test": "mocha test/**.js --timeout 10000 --exit",
     "test-docker": "xvfb-run npm test",
@@ -42,7 +42,7 @@
     "@mapbox/polyline": "^1.2.1",
     "@mapbox/sphericalmercator": "2.0.2",
     "@mapbox/vector-tile": "3.0.0",
-    "@maplibre/maplibre-gl-inspect": "1.8.2",
+    "@maplibre/maplibre-gl-inspect": "1.9.0",
     "@maplibre/maplibre-gl-native": "6.4.1",
     "@maplibre/maplibre-gl-style-spec": "24.10.0",
     "@sindresorhus/fnv1a": "3.1.0",
@@ -55,9 +55,9 @@
     "copyfiles": "2.4.1",
     "cors": "2.8.6",
     "express": "5.2.1",
-    "handlebars": "4.7.9",
+    "handlebars": "4.7.10",
     "http-shutdown": "1.2.2",
-    "maplibre-gl": "5.24.0",
+    "maplibre-gl": "6.11.2",
     "morgan": "1.12.1",
     "pbf": "5.1.0",
     "pmtiles": "4.4.1",
@@ -66,7 +66,7 @@
     "sanitize-filename": "1.6.4",
     "secure-json-parse": "^4.1.0",
     "semver": "^7.8.5",
-    "sharp": "0.35.4",
+    "sharp": "0.35.5",
     "tileserver-gl-styles": "2.0.0"
   },
   "devDependencies": {
@@ -117,7 +117,7 @@
   },
   "overrides": {
     "tar": "^7.5.22",
-    "shell-quote": "^1.10.0",
+    "shell-quote": "^1.12.0",
     "body-parser": "^2.3.0",
     "@tootallnate/once": "^2.0.1"
   }
