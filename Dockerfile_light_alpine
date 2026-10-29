@@ -1,0 +1,75 @@
+# tileserver-gl-light на Alpine
+#
+# 1. В строке ARG BASE_IMAGE ниже подставить образ из universal-base-images
+#
+# 2. Из корня репозитория:
+#      node publish.js --no-publish
+#      cd light && npm install --package-lock-only
+#
+# 3. Из папки light/:
+#      docker build -f Dockerfile_light_alpine -t tileserver-gl-light:alpine .
+#
+# 4. Запуск:
+#      docker run --rm -p 8080:8080 -v /путь/к/тайлам:/data tileserver-gl-light:alpine
+
+ARG BASE_IMAGE=node:24-alpine
+
+# --- Сборка ---
+FROM ${BASE_IMAGE} AS builder
+
+ENV NODE_ENV="production"
+SHELL ["/bin/sh", "-o", "pipefail", "-c"]
+
+# Для сборки sqlite3 из исходников
+RUN apk add --no-cache --virtual .build-deps \
+      python3 \
+      make \
+      g++ \
+      libc6-compat
+
+WORKDIR /usr/src/app
+
+COPY package.json package-lock.json ./
+
+RUN npm config set fetch-retries 5 && \
+    npm config set fetch-retry-mintimeout 100000 && \
+    npm config set fetch-retry-maxtimeout 600000 && \
+    npm ci --omit=dev && \
+    npm cache clean --force && \
+    chown -R root:root /usr/src/app
+
+# --- Финальный образ ---
+FROM ${BASE_IMAGE} AS final
+
+ENV \
+    NODE_ENV="production" \
+    CHOKIDAR_USEPOLLING=1 \
+    CHOKIDAR_INTERVAL=500
+
+SHELL ["/bin/sh", "-o", "pipefail", "-c"]
+
+# С libstdc++ слинкован собранный sqlite3
+RUN apk add --no-cache libstdc++ && \
+    (getent group node >/dev/null || addgroup -S node) && \
+    (getent passwd node >/dev/null || adduser -S -G node node)
+
+RUN mkdir -p /home/node/.aws && \
+    chown -R node:node /home/node
+
+COPY --from=builder /usr/src/app /usr/src/app
+COPY . /usr/src/app
+
+RUN mkdir -p /data && \
+    chown node:node /data && \
+    chmod +x /usr/src/app/docker-entrypoint.sh
+
+VOLUME /data
+WORKDIR /data
+
+EXPOSE 8080
+
+USER node:node
+
+ENTRYPOINT ["/usr/src/app/docker-entrypoint.sh"]
+
+HEALTHCHECK CMD node /usr/src/app/src/healthcheck.js
