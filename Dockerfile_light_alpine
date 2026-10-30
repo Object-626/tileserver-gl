@@ -4,7 +4,7 @@
 #
 # 2. Из корня репозитория:
 #      node publish.js --no-publish
-#      cd light && npm install --package-lock-only
+#      cd light && npm install --package-lock-only --ignore-scripts
 #
 # 3. Из папки light/:
 #      docker build -f Dockerfile_light_alpine -t tileserver-gl-light:alpine .
