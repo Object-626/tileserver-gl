@@ -36,6 +36,7 @@ packageJson.description =
 delete packageJson.dependencies['canvas'];
 delete packageJson.dependencies['@maplibre/maplibre-gl-native'];
 delete packageJson.dependencies['sharp'];
+delete packageJson.dependencies['@mapbox/mbtiles'];
 
 delete packageJson.optionalDependencies;
 delete packageJson.devDependencies;

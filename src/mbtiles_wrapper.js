@@ -1,4 +1,3 @@
-import MBTiles from '@mapbox/mbtiles';
 import util from 'node:util';
 
 /**
@@ -13,7 +12,7 @@ class MBTilesWrapper {
 
   /**
    * Get the underlying MBTiles object.
-   * @returns {MBTiles} The MBTiles instance.
+   * @returns {import('@mapbox/mbtiles').default} The MBTiles instance.
    */
   getMbTiles() {
     return this._mbtiles;
@@ -41,7 +40,8 @@ class MBTilesWrapper {
  * @param {string} inputFile - The path to the input MBTiles file.
  * @returns {Promise<MBTilesWrapper>} A promise that resolves with a MBTilesWrapper instance or rejects with an error.
  */
-export function openMbTilesWrapper(inputFile) {
+export async function openMbTilesWrapper(inputFile) {
+  const { default: MBTiles } = await import('@mapbox/mbtiles');
   return new Promise((resolve, reject) => {
     const mbtiles = new MBTiles(inputFile + '?mode=ro', (err) => {
       if (err) {
