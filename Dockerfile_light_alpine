@@ -20,13 +20,6 @@ FROM ${BASE_IMAGE} AS builder
 ENV NODE_ENV="production"
 SHELL ["/bin/sh", "-o", "pipefail", "-c"]
 
-# Для сборки sqlite3 из исходников
-RUN apk add --no-cache --virtual .build-deps \
-      python3 \
-      make \
-      g++ \
-      libc6-compat
-
 WORKDIR /usr/src/app
 
 COPY package.json package-lock.json ./
@@ -48,9 +41,7 @@ ENV \
 
 SHELL ["/bin/sh", "-o", "pipefail", "-c"]
 
-# С libstdc++ слинкован собранный sqlite3
-RUN apk add --no-cache libstdc++ && \
-    (getent group node >/dev/null || addgroup -S node) && \
+RUN (getent group node >/dev/null || addgroup -S node) && \
     (getent passwd node >/dev/null || adduser -S -G node node)
 
 RUN mkdir -p /home/node/.aws && \
